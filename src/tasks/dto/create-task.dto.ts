@@ -3,10 +3,16 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTaskDto {
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({
+        type: String,
+        description: 'Title',
+    })
     title: string;
 
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({
+        type: String,
+        description: 'Description',
+    })
     description: string;
 }

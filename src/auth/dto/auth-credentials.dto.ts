@@ -5,7 +5,10 @@ export class AuthCredentialsDto {
     @IsString()
     @MinLength(4)
     @MaxLength(20)
-    @ApiProperty()
+    @ApiProperty({
+        type: String,
+        description: 'Username',
+    })
     username: string;
     
     @IsString()
@@ -14,6 +17,9 @@ export class AuthCredentialsDto {
     @Matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/,{
         message: 'Password must contain atleast one Upper case, lowercase and a number'
     })
-    @ApiProperty()
+    @ApiProperty({
+        type: String,
+        description: 'Password',
+    })
     password: string;
 }

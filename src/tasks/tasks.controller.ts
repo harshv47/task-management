@@ -8,6 +8,7 @@ import { TaskStatus } from './task.status.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/auth/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { ApiOkResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
@@ -17,6 +18,10 @@ export class TasksController {
     constructor(private tasksService: TasksService) {}
 
     @Get()
+    @ApiOkResponse({
+        description: 'Returns the task(s)',
+    })
+    @ApiBearerAuth()
     getTasks(
         @Query(ValidationPipe) filterDto: GetTasksFilterDto,
         @GetUser() user: User,
@@ -26,6 +31,10 @@ export class TasksController {
     }
 
     @Get('/:id')
+    @ApiOkResponse({
+        description: 'Returns the task',
+    })
+    @ApiBearerAuth()
     getTaskById(
         @Param('id', ParseIntPipe) id: number,
         @GetUser() user: User,
@@ -34,6 +43,10 @@ export class TasksController {
     }
 
     @Delete('/:id')
+    @ApiOkResponse({
+        description: 'Deletes the task',
+    })
+    @ApiBearerAuth()
     deleteTaskById(
         @Param('id', ParseIntPipe) id: number,
         @GetUser() user: User,
@@ -42,6 +55,7 @@ export class TasksController {
     }
 
     @Patch('/:id/status')
+    @ApiBearerAuth()
     updateTaskById(
         @Param('id', ParseIntPipe) id: number,
         @Body('status', TaskStatusValidationPipe) status: TaskStatus,
@@ -52,6 +66,7 @@ export class TasksController {
 
     @Post()
     @UsePipes(ValidationPipe)
+    @ApiBearerAuth()
     createTask(
         @Body() createTaskDto: CreateTaskDto,
         @GetUser() user: User,
