@@ -6,6 +6,7 @@ export class CreateTaskDto {
     @ApiProperty({
         type: String,
         description: 'Title',
+        format: 'form',
     })
     title: string;
 
@@ -13,6 +14,7 @@ export class CreateTaskDto {
     @ApiProperty({
         type: String,
         description: 'Description',
+        format: 'form',
     })
     description: string;
 }

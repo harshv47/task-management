@@ -8,6 +8,7 @@ export class AuthCredentialsDto {
     @ApiProperty({
         type: String,
         description: 'Username',
+        format: 'form',
     })
     username: string;
     
@@ -20,6 +21,7 @@ export class AuthCredentialsDto {
     @ApiProperty({
         type: String,
         description: 'Password',
+        format: 'form',
     })
     password: string;
 }

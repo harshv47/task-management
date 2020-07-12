@@ -8,7 +8,7 @@ import { TaskStatus } from './task.status.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/auth/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { ApiOkResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiOkResponse, ApiBody, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
@@ -17,6 +17,7 @@ export class TasksController {
 
     constructor(private tasksService: TasksService) {}
 
+    @ApiConsumes('application/x-www-form-urlencoded')
     @Get()
     @ApiOkResponse({
         description: 'Returns the task(s)',
@@ -30,6 +31,7 @@ export class TasksController {
         return this.tasksService.getTasks(filterDto, user);
     }
 
+    @ApiConsumes('application/x-www-form-urlencoded')
     @Get('/:id')
     @ApiOkResponse({
         description: 'Returns the task',
@@ -42,6 +44,7 @@ export class TasksController {
         return this.tasksService.getTaskById(id, user);
     }
 
+    @ApiConsumes('application/x-www-form-urlencoded')
     @Delete('/:id')
     @ApiOkResponse({
         description: 'Deletes the task',
@@ -54,6 +57,7 @@ export class TasksController {
         return this.tasksService.deleteTaskById(id, user);
     }
 
+    @ApiConsumes('application/x-www-form-urlencoded')
     @Patch('/:id/status')
     @ApiBearerAuth()
     updateTaskById(
@@ -64,6 +68,7 @@ export class TasksController {
         return this.updateTaskById(id, status, user);
     }
 
+    @ApiConsumes('application/x-www-form-urlencoded')
     @Post()
     @UsePipes(ValidationPipe)
     @ApiBearerAuth()
