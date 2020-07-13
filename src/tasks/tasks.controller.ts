@@ -8,7 +8,7 @@ import { TaskStatus } from './task.status.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/auth/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { ApiOkResponse, ApiBody, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { ApiOkResponse, ApiBody, ApiBearerAuth, ApiConsumes, ApiBadRequestResponse } from '@nestjs/swagger';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
@@ -22,7 +22,7 @@ export class TasksController {
     @ApiOkResponse({
         description: 'Returns the task(s)',
     })
-    @ApiBearerAuth()
+    @ApiBearerAuth('JWT')
     getTasks(
         @Query(ValidationPipe) filterDto: GetTasksFilterDto,
         @GetUser() user: User,
@@ -36,7 +36,10 @@ export class TasksController {
     @ApiOkResponse({
         description: 'Returns the task',
     })
-    @ApiBearerAuth()
+    @ApiBadRequestResponse({
+        description: 'Task not found',
+    })
+    @ApiBearerAuth('JWT')
     getTaskById(
         @Param('id', ParseIntPipe) id: number,
         @GetUser() user: User,
@@ -49,7 +52,7 @@ export class TasksController {
     @ApiOkResponse({
         description: 'Deletes the task',
     })
-    @ApiBearerAuth()
+    @ApiBearerAuth('JWT')
     deleteTaskById(
         @Param('id', ParseIntPipe) id: number,
         @GetUser() user: User,
@@ -59,7 +62,7 @@ export class TasksController {
 
     @ApiConsumes('application/x-www-form-urlencoded')
     @Patch('/:id/status')
-    @ApiBearerAuth()
+    @ApiBearerAuth('JWT')
     updateTaskById(
         @Param('id', ParseIntPipe) id: number,
         @Body('status', TaskStatusValidationPipe) status: TaskStatus,
@@ -71,7 +74,7 @@ export class TasksController {
     @ApiConsumes('application/x-www-form-urlencoded')
     @Post()
     @UsePipes(ValidationPipe)
-    @ApiBearerAuth()
+    @ApiBearerAuth('JWT')
     createTask(
         @Body() createTaskDto: CreateTaskDto,
         @GetUser() user: User,
